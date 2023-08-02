@@ -4,4 +4,5 @@
 		"https://checkstyle.org/dtds/suppressions_1_2.dtd">
 <suppressions>
 	<suppress checks="JavadocType" message="missing @author tag" />
+	<suppress files="HotelsYamlTests" checks="SpringLeadingWhitespace" />
 </suppressions>
