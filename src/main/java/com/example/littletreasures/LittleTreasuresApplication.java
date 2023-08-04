@@ -16,13 +16,17 @@
 
 package com.example.littletreasures;
 
+import com.example.littletreasures.data.HotelProperties;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 /**
  * Little Treasures main application entry point.
  */
 @SpringBootApplication
+@EnableConfigurationProperties(HotelProperties.class)
 public class LittleTreasuresApplication {
 
 	public static void main(String[] args) {

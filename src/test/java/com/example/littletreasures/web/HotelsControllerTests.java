@@ -16,6 +16,8 @@
 
 package com.example.littletreasures.web;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,8 +29,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.FileCopyUtils;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -65,10 +69,7 @@ class HotelsControllerTests {
 		this.mvc.perform(get(url))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(content().json("""
-					[{"Name":"N1","Address":"a1","GeographicOrder":"south"},
-					{"Name":"N2","Address":"a2","GeographicOrder":"east"}]
-					"""));
+			.andExpect(content().json(from("hotels-all.json")));
 	}
 
 	@Test
@@ -78,9 +79,7 @@ class HotelsControllerTests {
 		this.mvc.perform(get("/hotels/n1"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(content().json("""
-					{"Name":"N1","Address":"a1","GeographicOrder":"south"}
-					"""));
+			.andExpect(content().json(from("hotel.json")));
 	}
 
 	@Test
@@ -92,10 +91,7 @@ class HotelsControllerTests {
 		this.mvc.perform(get("/hotels/search/geographicorder/south"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(content().json("""
-					[{"Name":"N1","Address":"a1","GeographicOrder":"south"},
-					{"Name":"N2","Address":"a2","GeographicOrder":"south"}]
-					"""));
+			.andExpect(content().json(from("hotels-geographic-order.json")));
 	}
 
 	@Test
@@ -110,6 +106,12 @@ class HotelsControllerTests {
 	@Test
 	void slashHotelsSlashNameWhenNotFoundReturns404() throws Exception {
 		this.mvc.perform(get("/hotels/n1")).andExpect(status().isNotFound());
+	}
+
+	private String from(String path) throws IOException {
+		ClassPathResource resource = new ClassPathResource(path, getClass());
+		InputStreamReader reader = new InputStreamReader(resource.getInputStream());
+		return FileCopyUtils.copyToString(reader);
 	}
 
 }

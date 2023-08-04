@@ -30,7 +30,7 @@ import java.util.List;
  * @param theme the hotel theme, or {@code null}
  * @param architects the architects of the hotel (if known)
  * @param geographicOrder the geographic order of the hotel (for example, "south strip")
- * @see HotelsData
+ * @see HotelProperties
  */
 public record Hotel(String name, String address, String image, int rooms, String opened, String operator, String theme,
 		List<String> architects, String geographicOrder) {

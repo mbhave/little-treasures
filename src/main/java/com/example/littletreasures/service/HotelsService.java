@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.littletreasures.data.Hotel;
-import com.example.littletreasures.data.HotelsData;
+import com.example.littletreasures.data.HotelProperties;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -42,13 +42,14 @@ public class HotelsService {
 
 	private MultiValueMap<String, Hotel> byGeographicOrder;
 
-	HotelsService(HotelsData hotels) {
-		Assert.state(hotels.fileVersion() == 1, "Only version 1 is supported");
+	HotelsService(HotelProperties properties) {
+		Assert.state(properties.fileVersion() == 1, "Only version 1 is supported");
 		LinkedCaseInsensitiveMap<Hotel> byName = new LinkedCaseInsensitiveMap<>();
-		hotels.stream().forEach((hotel) -> byName.put(hotel.name(), hotel));
+		List<Hotel> hotels = properties.hotels();
+		hotels.forEach((hotel) -> byName.put(hotel.name(), hotel));
 		MultiValueMap<String, Hotel> byGeographicOrder = new LinkedMultiValueMap<>();
-		hotels.stream().forEach((hotel) -> byGeographicOrder.add(hotel.geographicOrder().toLowerCase(), hotel));
-		this.all = Collections.unmodifiableList(hotels.hotels());
+		hotels.forEach((hotel) -> byGeographicOrder.add(hotel.geographicOrder().toLowerCase(), hotel));
+		this.all = Collections.unmodifiableList(hotels);
 		this.byName = Collections.unmodifiableMap(byName);
 		this.byGeographicOrder = CollectionUtils.unmodifiableMultiValueMap(byGeographicOrder);
 	}

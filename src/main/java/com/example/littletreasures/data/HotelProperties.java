@@ -16,23 +16,16 @@
 
 package com.example.littletreasures.data;
 
-import org.junit.jupiter.api.Test;
+import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Tests for {@link HotelsDataConfiguration}.
+ * Data for all the {@link Hotel hotels} we know about.
+ * @param fileVersion the version of the loaded data
+ * @param hotels the hotels
  */
-@SpringBootTest(classes = HotelsDataConfiguration.class)
-class HotelsDataConfigurationTests {
-
-	@Test
-	void providesHotelsDataBean(@Autowired HotelsData data) {
-		assertThat(data).hasSize(32);
-		assertThat(data.fileVersion()).isOne();
-	}
+@ConfigurationProperties(prefix = "treasures")
+public record HotelProperties(int fileVersion, List<Hotel> hotels) {
 
 }

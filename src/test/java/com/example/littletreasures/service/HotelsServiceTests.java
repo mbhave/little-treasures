@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.littletreasures.data.Hotel;
-import com.example.littletreasures.data.HotelsData;
+import com.example.littletreasures.data.HotelProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,19 +33,19 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  */
 class HotelsServiceTests {
 
-	private HotelsData data;
+	private HotelProperties data;
 
 	private HotelsService service;
 
 	@BeforeEach
 	void setup() {
-		this.data = new HotelsData(1, createSampleHotels());
+		this.data = new HotelProperties(1, createSampleHotels());
 		this.service = new HotelsService(this.data);
 	}
 
 	@Test
 	void createWhenFileVersionIsNotSupportedThrowsException() {
-		HotelsData hotels = new HotelsData(2, createSampleHotels());
+		HotelProperties hotels = new HotelProperties(2, createSampleHotels());
 		assertThatIllegalStateException().isThrownBy(() -> new HotelsService(hotels))
 			.withMessage("Only version 1 is supported");
 	}
